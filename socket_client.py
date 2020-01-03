@@ -17,14 +17,14 @@ def connect(ip, port, my_username, error_callback):
         return False
     
     username = my_username.encode('utf-8')
-    username_header = f"{len(username):<(HEADER_LENGTH)}".encode('utf-8')
+    username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
     client_socket.send(username_header + username)
     
     return True
 def send(message):
     
     message = message.encode('utf-8')
-    message_header = f"{len(message):<(HEADER_LENGTH)}".encode('utf-8')
+    message_header = f"{len(message):<{HEADER_LENGTH}}".encode('utf-8')
     client_socket.send(message_header + message)
     
 def start_listening(incoming_message_callback, error_callback):

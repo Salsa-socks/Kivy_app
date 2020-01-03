@@ -3,10 +3,10 @@ import select
 
 HEADER_LENGTH = 10
 ip = "127.0.0.1"
-port = "1234"
+port = 1234
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR)
+server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 server_socket.bind((ip, port))
 server_socket.listen()
 socket_list = [server_socket]
