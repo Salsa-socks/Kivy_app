@@ -8,6 +8,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 import os
+import socket_client
 kivy.require("1.11.1")
 
 class ConnectPage(GridLayout):
