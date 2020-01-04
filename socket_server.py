@@ -23,6 +23,7 @@ def receive_msg(client_socket):
         message_length = int(message_header.decode('utf-8').strip())
         
         return {'header': message_header, 'data': client_socket.recv(message_length)}
+    
     except:
         return False
     
