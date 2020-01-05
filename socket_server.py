@@ -1,7 +1,7 @@
 import socket
 import select
 
-HEADER_LENGTH = 10
+HEADER_LENGTH = 50
 ip = "127.0.0.1"
 port = 1234
 

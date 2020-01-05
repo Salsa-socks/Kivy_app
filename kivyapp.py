@@ -15,8 +15,7 @@ import os
 import socket_client
 kivy.require("1.11.1")
 
-class ConnectPage(GridLayout):
-    
+class ConnectPage(GridLayout): 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
@@ -74,8 +73,7 @@ class ConnectPage(GridLayout):
         chat_app.create_chat_page()
         chat_app.screen_manager.current = 'Chat'
 
-class ScrollableLabel(ScrollView):
-    
+class ScrollableLabel(ScrollView): 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.layout = GridLayout(cols=1, size_hint_y=None)
@@ -96,8 +94,12 @@ class ScrollableLabel(ScrollView):
         
         self.scroll_to(self.scroll_to_point)
         
-class ChatPage(GridLayout):
-    
+    def update_chat_history_layout(self, _=None):
+        self.layout.height = self.chat_history.texture_size[1] + 15
+        self.chat_history.height = self.chat_history.texture_size[1]
+        self.chat_history.text_size = (self.chat_history.width * 0.98, None)
+        
+class ChatPage(GridLayout): 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
@@ -120,6 +122,22 @@ class ChatPage(GridLayout):
         
         Clock.schedule_once(self.focus_text_input, 1)
         socket_client.start_listening(self.incoming_message, show_error)
+        self.bind(size=self.adjust_fields)
+        
+    def adjust_fields(self,_):
+        if Window.size[1] * 0.1 < 50:
+            new_height = Window.size[1] - 50
+        else:
+            new_height = Window.size[1] * 0.9
+        self.history.height = new_height
+        
+        if Window.size[0] * 0.2 < 160:
+            new_width = Window.size[0] = 160
+        else:
+            new_width = Window.size[0] * 0.8
+        self.new_message.width = new_width
+        
+        Clock.schedule_once(self.history.update_chat_history_layout, 0.01)
         
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
         if keycode == 40:
@@ -141,7 +159,6 @@ class ChatPage(GridLayout):
         self.history.update_chat_history(f"[color=20dd20]{username}[/color]: {message}")
 
 class Infopage(GridLayout):
-    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         
@@ -166,7 +183,7 @@ class EpicApp(App):
         self.screen_manager.add_widget(screen)
         
         self.info_page = Infopage()
-        screen = Screen(name="info")
+        screen = Screen(name="Info")
         screen.add_widget(self.info_page)
         self.screen_manager.add_widget(screen)
         

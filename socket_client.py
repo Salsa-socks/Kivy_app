@@ -2,7 +2,7 @@ import socket
 import errno
 from threading import Thread
 
-HEADER_LENGTH = 10
+HEADER_LENGTH = 50
 client_socket = None
 
 def connect(ip, port, my_username, error_callback):
@@ -32,21 +32,20 @@ def start_listening(incoming_message_callback, error_callback):
 
 def listen(incoming_message_callback, error_callback):
     while True:
+
         try:
             while True:
                 username_header = client_socket.recv(HEADER_LENGTH)
                 if not len(username_header):
-                    error_callback('Connection closed by server')
-                
+                    error_callback('Connection closed by the server')
+                    
                 username_length = int(username_header.decode('utf-8').strip())
                 username = client_socket.recv(username_length).decode('utf-8')
-                
                 message_header = client_socket.recv(HEADER_LENGTH)
-                messsage_length = int(message_header.decode('utf-8').strip())
-                message = client_socket.recv(username_length).decode('utf-8')
+                message_length = int(message_header.decode('utf-8').strip())
+                message = client_socket.recv(message_length).decode('utf-8')
                 
-                incoming_message_callback(username,message)
+                incoming_message_callback(username, message)
                 
         except Exception as e:
-            error_callback('Reading error: {}'.format(str(e)))  
-    
+            error_callback('Reading error: {}'.format(str(e)))
